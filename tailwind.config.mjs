@@ -4,46 +4,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e'
+        midnight: {
+          900: '#0A0B10', // Deep Navy
+          800: '#161821', // Slate Grey Surface
         },
-        accent: {
-          50: '#fdf4ff',
-          100: '#fae8ff',
-          200: '#f5d0fe',
-          300: '#f0abfc',
-          400: '#e879f9',
-          500: '#d946ef',
-          600: '#c026d3',
-          700: '#a21caf',
-          800: '#86198f',
-          900: '#701a75'
-        }
+        azure: {
+          DEFAULT: '#00D1FF', // Electric Azure
+          light: '#70EFFF',
+          dark: '#0085A3',
+        },
+        ocean: {
+          900: '#0A192F', // Deep Oceanic Blue for Slide 2
+        },
+        mist: '#E2E8F0', // Silver Mist Body
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif']
+        sans: ['Inter', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.5s ease-out'
+        'unmask': 'unmask 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards',
+        'subtle-float': 'subtleFloat 10s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' }
+        unmask: {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
         },
-        slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' }
+        subtleFloat: {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '50%': { transform: 'translate(10px, -15px)' }
         }
       }
     }

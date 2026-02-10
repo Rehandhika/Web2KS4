@@ -4,120 +4,81 @@ import { initThreeHero, destroyThreeHero } from './ThreeHero';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function initHeroAnimations(): void {
-  const tl = gsap.timeline({
-    defaults: { ease: 'power3.out' }
+function initHeroEntrance(): void {
+  const lines = document.querySelectorAll('.hero-line');
+  const label = document.getElementById('hero-label');
+  const subtitle = document.getElementById('hero-subtitle');
+  const cta = document.getElementById('hero-cta');
+  const visual = document.getElementById('hero-visual');
+
+  if (!lines.length) return;
+
+  // Kill any running animations on these elements
+  gsap.killTweensOf([lines, label, subtitle, cta, visual]);
+
+  const tl = gsap.timeline({ 
+    defaults: { ease: 'expo.out', duration: 1.5 }
   });
-  
-  // Heading fade + slide up
-  tl.to('#hero-title', {
-    opacity: 1,
-    y: 0,
-    duration: 0.6
-  })
-  // Subtitle fade
-  .to('#hero-subtitle', {
-    opacity: 1,
-    y: 0,
-    duration: 0.5
-  }, '-=0.3')
-  // CTA stagger
-  .to('#hero-cta', {
-    opacity: 1,
-    y: 0,
-    duration: 0.4
-  }, '-=0.2')
-  // 3D visual scale-in
-  .to('#hero-visual', {
-    opacity: 1,
-    scale: 1,
-    duration: 0.6,
-    ease: 'power2.out'
-  }, '-=0.2');
+
+  tl.to(label, { opacity: 1, duration: 1 })
+    .to(lines, {
+      y: 0,
+      opacity: 1,
+      stagger: 0.15,
+      ease: 'power4.out'
+    }, '-=0.8')
+    .to(subtitle, {
+      opacity: 1,
+      y: 0,
+      duration: 1.2
+    }, '-=1.2')
+    .to(cta, {
+      opacity: 1,
+      y: 0,
+      duration: 1
+    }, '-=1')
+    .to(visual, {
+      opacity: 1,
+      duration: 2,
+      scale: 1
+    }, '-=1.5');
 }
 
-function initStatisticsAnimation(): void {
+function initScrollAnimations(): void {
+  // Stat Numbers Reveal - Solid simple approach
   const statNumbers = document.querySelectorAll('.stat-number');
-  
   statNumbers.forEach((stat) => {
-    if (!stat) return;
-    
-    const finalValue = parseInt(stat.textContent || '0', 10);
-    const animatedStat = stat as HTMLElement;
-    
-    // Prevent re-trigger
-    if (animatedStat.dataset.animated === 'true') return;
-    
-    gsap.fromTo(
-      animatedStat,
-      { textContent: 0 },
+    const finalVal = parseInt(stat.getAttribute('data-value') || '0', 10);
+    gsap.fromTo(stat, 
+      { textContent: '0' },
       {
-        textContent: finalValue,
-        duration: 1.5,
-        ease: 'power2.out',
-        snap: { textContent: 1 },
+        textContent: finalVal,
+        duration: 2,
         scrollTrigger: {
-          trigger: animatedStat,
-          start: 'top 60%',
-          toggleActions: 'play none none none',
-          once: true
+          trigger: stat,
+          start: 'top 90%'
         },
-        onUpdate: function () {
-          animatedStat.textContent = Math.ceil(this.targets()[0].textContent).toString();
-        },
-        onComplete: () => {
-          animatedStat.dataset.animated = 'true';
-        }
+        snap: { textContent: 1 },
+        ease: 'power2.out'
       }
     );
   });
 }
 
-function initStatCardsHover(): void {
-  const cards = document.querySelectorAll('.stat-card');
-  
-  cards.forEach((card) => {
-    card.addEventListener('mouseenter', () => {
-      gsap.to(card, {
-        y: -4,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        y: 0,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    });
-  });
-}
-
 async function initPage(): Promise<void> {
-  // Initialize Three.js hero (desktop only)
   const canvas = document.getElementById('three-canvas') as HTMLCanvasElement;
-  if (canvas && window.innerWidth >= 768) {
+  if (canvas) {
     await initThreeHero(canvas);
   }
   
-  // Initialize animations
-  initHeroAnimations();
-  initStatisticsAnimation();
-  initStatCardsHover();
-  
+  initHeroEntrance();
+  initScrollAnimations();
   ScrollTrigger.refresh();
 }
 
 function cleanup(): void {
   destroyThreeHero();
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+  ScrollTrigger.getAll().forEach(t => t.kill());
 }
 
 export { initPage, cleanup };
-
-if (typeof window !== 'undefined') {
-  initPage();
-  window.addEventListener('beforeunload', cleanup);
-}

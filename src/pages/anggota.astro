@@ -6,34 +6,33 @@ import studentsData from '../data/students.json';
 const { officers, members } = studentsData;
 ---
 
-<MainLayout title="Anggota" pageClass="bg-gray-50">
-  <section class="pt-24 pb-12">
+<MainLayout title="Squad" pageClass="bg-midnight-900">
+  <section class="section-padding pt-32">
     <div class="container-custom">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Our Members</h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Meet the dedicated individuals who make our class special.
-        </p>
+      <div class="mb-16">
+        <div class="font-mono text-xs text-azure tracking-[0.4em] uppercase mb-6">// CLASSIFIED_SQUAD</div>
+        <h1 class="font-display font-bold text-5xl md:text-7xl text-white leading-none mb-8">OUR<br/><span class="text-azure">COLLECTIVE</span></h1>
+        <p class="text-mist/60 max-w-2xl font-light">The strategic minds behind the operation. A diverse group of innovators committed to structural excellence.</p>
       </div>
       
-      <div class="flex justify-center gap-4 mb-12 flex-wrap">
+      <div class="flex gap-4 mb-16 flex-wrap">
         <button
-          class="filter-btn px-6 py-2 bg-primary-600 text-white font-medium rounded-full transition-colors"
+          class="filter-btn px-8 py-3 bg-midnight-800 border border-white/10 text-mist text-xs uppercase tracking-widest hover:border-azure transition-all"
           data-filter="all"
         >
-          All
+          All Units
         </button>
         <button
-          class="filter-btn px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
+          class="filter-btn px-8 py-3 bg-midnight-800 border border-white/10 text-mist text-xs uppercase tracking-widest hover:border-azure transition-all"
           data-filter="Chairperson"
         >
           Officers
         </button>
         <button
-          class="filter-btn px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
+          class="filter-btn px-8 py-3 bg-midnight-800 border border-white/10 text-mist text-xs uppercase tracking-widest hover:border-azure transition-all"
           data-filter="Member"
         >
-          Members
+          Regulars
         </button>
       </div>
       
@@ -66,11 +65,10 @@ const { officers, members } = studentsData;
 <script>
   import { initPage, cleanup } from '../scripts/anggota';
   
-  document.addEventListener('astro:page-load', () => {
+  initPage();
+  window.addEventListener('page-transition-done', () => {
     initPage();
   });
   
-  document.addEventListener('astro:before-swap', () => {
-    cleanup();
-  });
+  window.addEventListener('beforeunload', cleanup);
 </script>

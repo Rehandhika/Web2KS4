@@ -1,0 +1,129 @@
+<section id="chairman-greeting" data-color="#0A192F" class="relative w-full bg-midnight-900 overflow-hidden flex items-center h-screen-dynamic group">
+  <!-- SVG Filter for Liquid Distortion -->
+  <svg class="hidden">
+    <defs>
+      <filter id="liquid-distortion">
+        <feTurbulence type="fractalNoise" baseFrequency="0.01 0.005" numOctaves="5" seed="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="B" />
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+
+  <!-- Slide Number for Mobile -->
+  <div class="slide-number">02</div>
+
+  <div class="container-custom relative z-10 w-full h-full flex flex-col lg:grid lg:grid-cols-12 lg:gap-16 items-center justify-center pt-20 pb-8 lg:py-0">
+    
+    <div class="lg:col-span-5 relative w-full max-w-sm lg:max-w-none order-1 lg:order-1 mb-4 lg:mb-0 h-[35vh] lg:h-auto aspect-[3/4]">
+        <div class="relative w-full h-full overflow-hidden bg-midnight-800 border border-white/5 reveal-image-container">
+          <div class="w-full h-full overflow-hidden">
+             <img 
+               src="/images/students/chairperson.webp" 
+               alt="Chairman" 
+               class="w-full h-full object-cover grayscale transition-all duration-1000 chairman-img"
+               style="filter: url(#liquid-distortion) grayscale(100%);"
+               loading="lazy"
+             />
+          </div>
+          <div class="absolute inset-0 border border-azure/30 pointer-events-none opacity-0 reveal-border">
+             <div class="absolute top-0 left-0 bg-azure text-midnight-900 text-[10px] font-mono px-2 py-1 uppercase tracking-widest">Unit.Leader_01</div>
+             <div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-azure"></div>
+          </div>
+        </div>
+    </div>
+
+    <div class="lg:col-span-7 flex flex-col justify-center order-2 lg:order-2 w-full pl-2 lg:pl-0">
+        <div class="flex items-center space-x-4 mb-2 lg:mb-8 reveal-fade">
+          <div class="h-px w-8 lg:w-12 bg-azure"></div>
+          <span class="font-mono text-[9px] lg:text-[10px] tracking-[0.4em] text-azure uppercase">Message_Protocol</span>
+        </div>
+
+        <h2 class="font-display font-bold text-2xl sm:text-3xl md:text-6xl lg:text-7xl leading-tight text-white mb-4 lg:mb-8 chairman-quote opacity-0 glitch-text">
+          "INNOVATION IS NOT AN <br class="hidden lg:block"/> OPTION. IT IS OUR <span class="text-azure italic font-serif">OBLIGATION</span>."
+        </h2>
+
+        <div class="relative pl-4 lg:pl-8 border-l border-white/10 chairman-fades opacity-0">
+          <p class="text-mist/60 text-xs sm:text-sm lg:text-lg leading-relaxed max-w-xl mb-4 lg:mb-8 font-light line-clamp-3 lg:line-clamp-none">
+            Welcome to the digital frontier of Class 2KS4. We are building a legacy defined by precision, code, and unyielding ambition. This platform is a testament to our collective intelligence.
+          </p>
+          
+          <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 lg:w-12 lg:h-12 bg-white/5 border border-white/10 rounded-none flex items-center justify-center text-azure font-display font-bold text-base lg:text-xl">AF</div>
+            <div>
+              <div class="font-display font-bold text-white tracking-wide text-xs lg:text-base">AHMAD FAUZI</div>
+              <div class="font-mono text-[8px] lg:text-[9px] text-azure tracking-[0.3em] uppercase">Chairperson_Active</div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function playChairmanAnim() {
+    const section = document.getElementById('chairman-greeting');
+    if (!section) return;
+
+    const quote = section.querySelector('.chairman-quote');
+    const fades = section.querySelector('.chairman-fades');
+    const img = section.querySelector('.chairman-img');
+    const border = section.querySelector('.reveal-border');
+    const filter = document.querySelector('#liquid-distortion feDisplacementMap');
+
+    gsap.set([quote, fades, border], { opacity: 0 });
+    gsap.set(quote, { y: 30, filter: 'blur(5px)' });
+    gsap.set(fades, { y: 20 });
+    
+    if (filter) {
+      gsap.to(filter, { attr: { scale: 50 }, yoyo: true, repeat: 1, duration: 0.8 });
+      gsap.to(filter, { attr: { scale: 0 }, delay: 0.8, duration: 1.2 });
+    }
+
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1.5 } });
+    tl.to(img, { scale: 1.1, filter: 'grayscale(0%)', duration: 2 })
+      .to(border, { opacity: 1, duration: 0.8 }, '-=1.8')
+      .to(quote, { 
+        y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.2,
+        onStart: () => {
+           quote?.classList.add('glitching');
+           setTimeout(() => quote?.classList.remove('glitching'), 500);
+        }
+      }, '-=1.5')
+      .to(fades, { y: 0, opacity: 1 }, '-=1');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        playChairmanAnim();
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const section = document.getElementById('chairman-greeting');
+  if (section) observer.observe(section);
+
+  window.addEventListener('slide-enter', ((e: CustomEvent) => {
+    if (e.detail.id === 'chairman-greeting') playChairmanAnim();
+  }) as EventListener);
+</script>
+
+<style>
+  .glitching {
+    animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    color: var(--color-azure);
+  }
+  @keyframes glitch-skew {
+    0%, 100% { transform: skew(0deg); }
+    20% { transform: skew(-10deg); }
+    40% { transform: skew(10deg); }
+    60% { transform: skew(-5deg); }
+    80% { transform: skew(5deg); }
+  }
+</style>

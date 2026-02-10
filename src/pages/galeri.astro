@@ -48,14 +48,13 @@ const galleryItems = [
 ];
 ---
 
-<MainLayout title="Galeri" pageClass="bg-gray-50">
-  <section class="pt-24 pb-12">
+<MainLayout title="Journal" pageClass="bg-midnight-900">
+  <section class="section-padding pt-32">
     <div class="container-custom">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Photo Gallery</h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Capturing memories from our journey together.
-        </p>
+      <div class="mb-16">
+        <div class="font-mono text-xs text-azure tracking-[0.4em] uppercase mb-6">// VISUAL_ARCHIVE</div>
+        <h1 class="font-display font-bold text-5xl md:text-7xl text-white leading-none mb-8">CHRONICLE<br/><span class="text-azure">JOURNAL</span></h1>
+        <p class="text-mist/60 max-w-2xl font-light">Captured moments of development, collaboration, and structural evolution. A testament to our collective journey.</p>
       </div>
       
       <GalleryGrid items={galleryItems} />
@@ -66,11 +65,10 @@ const galleryItems = [
 <script>
   import { initPage, cleanup } from '../scripts/galeri';
   
-  document.addEventListener('astro:page-load', () => {
+  initPage();
+  window.addEventListener('page-transition-done', () => {
     initPage();
   });
   
-  document.addEventListener('astro:before-swap', () => {
-    cleanup();
-  });
+  window.addEventListener('beforeunload', cleanup);
 </script>

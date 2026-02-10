@@ -4,17 +4,16 @@ import CourseCard from '../components/CourseCard.astro';
 import coursesData from '../data/courses.json';
 ---
 
-<MainLayout title="Akademik" pageClass="bg-gray-50">
-  <section class="pt-24 pb-12">
+<MainLayout title="Academic" pageClass="bg-midnight-900">
+  <section class="section-padding pt-32">
     <div class="container-custom">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Academic Programs</h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Our comprehensive curriculum designed to prepare students for success.
-        </p>
+      <div class="mb-16">
+        <div class="font-mono text-xs text-azure tracking-[0.4em] uppercase mb-6">// CURRICULUM_PROTOCOL</div>
+        <h1 class="font-display font-bold text-5xl md:text-7xl text-white leading-none mb-8">KNOWLEDGE<br/><span class="text-azure">ARCHITECTURE</span></h1>
+        <p class="text-mist/60 max-w-2xl font-light">Our comprehensive development stack. Designed to build foundations and scale intellectual capability.</p>
       </div>
       
-      <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
         {coursesData.courses.map((course) => (
           <CourseCard course={course} />
         ))}
@@ -26,11 +25,10 @@ import coursesData from '../data/courses.json';
 <script>
   import { initPage, cleanup } from '../scripts/akademik';
   
-  document.addEventListener('astro:page-load', () => {
+  initPage();
+  window.addEventListener('page-transition-done', () => {
     initPage();
   });
   
-  document.addEventListener('astro:before-swap', () => {
-    cleanup();
-  });
+  window.addEventListener('beforeunload', cleanup);
 </script>

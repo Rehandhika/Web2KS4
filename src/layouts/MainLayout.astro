@@ -1,6 +1,9 @@
 ---
 import Navbar from '@components/Navbar.astro';
 import Footer from '@components/Footer.astro';
+import MagneticBar from '@components/MagneticBar.astro';
+import CustomCursor from '@components/CustomCursor.astro';
+import NoiseOverlay from '@components/NoiseOverlay.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -13,7 +16,7 @@ const { title, description = 'Class Portfolio Website', pageClass = '' } = Astro
 ---
 
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,19 +24,201 @@ const { title, description = 'Class Portfolio Website', pageClass = '' } = Astro
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title} | Class Portfolio</title>
-    <style is:global>
-      @tailwind base;
-      @tailwind components;
-      @tailwind utilities;
-    </style>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="bg-midnight-900 text-mist antialiased selection:bg-azure selection:text-midnight-900 overflow-hidden" data-barba="wrapper">
+    
+    <div class="transition-bars fixed inset-0 z-[600] pointer-events-none flex flex-col">
+      <div class="t-bar flex-grow bg-azure scale-y-0 origin-top"></div>
+      <div class="t-bar flex-grow bg-azure scale-y-0 origin-top"></div>
+      <div class="t-bar flex-grow bg-azure scale-y-0 origin-top"></div>
+      <div class="t-bar flex-grow bg-azure scale-y-0 origin-top"></div>
+      <div class="t-bar flex-grow bg-azure scale-y-0 origin-top"></div>
+    </div>
+
+    <CustomCursor />
+    <MagneticBar />
+    <NoiseOverlay />
+
+    <div id="side-nav" class="fixed right-8 top-1/2 -translate-y-1/2 z-[110] flex flex-col space-y-8 opacity-0 transition-all duration-1000 pointer-events-none"></div>
+
     <Navbar />
-    <main class="flex-grow {pageClass}">
-      <slot />
+    
+    <main data-barba="container" data-barba-namespace={title.toLowerCase()} class={pageClass}>
+      <div id="scroll-content" class="will-change-transform">
+        <slot />
+        {title.toLowerCase() !== 'home' && <Footer />}
+      </div>
     </main>
-    <Footer />
+
+    <script>
+      import barba from '@barba/core';
+      import Lenis from 'lenis';
+      import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+      import { Observer } from 'gsap/Observer';
+
+      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer);
+
+      let lenis: Lenis;
+      let currentIndex = 0;
+      let isAnimating = false;
+      let isTransitioning = false;
+      let sections: HTMLElement[] = [];
+      let scrollObserver: any = null;
+      let navTimer: any = null;
+
+      const resetNavTimer = () => {
+        clearTimeout(navTimer);
+        const header = document.getElementById('main-header');
+        if (window.scrollY > 100 && !document.body.classList.contains('menu-open')) {
+          navTimer = setTimeout(() => {
+            if (!isAnimating) header?.classList.add('nav-hidden');
+          }, 3000); 
+        }
+      };
+
+      const initLenis = () => {
+        if (lenis) lenis.destroy();
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          lerp: 0.1
+        });
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        lenis.on('scroll', ScrollTrigger.update);
+        
+        const header = document.getElementById('main-header');
+        lenis.on('scroll', ({ scroll, direction }) => {
+          if (isTransitioning) return;
+          if (scroll > 100) {
+            header?.classList.add('nav-scrolled');
+            if (direction === 1) header?.classList.add('nav-hidden');
+            else { header?.classList.remove('nav-hidden'); resetNavTimer(); }
+          } else {
+            header?.classList.remove('nav-scrolled', 'nav-hidden');
+            clearTimeout(navTimer);
+          }
+        });
+
+        // Clean and Re-add global listener
+        window.removeEventListener('mousemove', resetNavTimer);
+        window.addEventListener('mousemove', resetNavTimer);
+      }
+
+      const gotoSection = (index: number) => {
+        if (index < 0 || index >= sections.length || isAnimating || isTransitioning) return;
+        isAnimating = true;
+        currentIndex = index;
+
+        gsap.to(`.dot-nav-${index}`, { backgroundColor: '#00D1FF', height: 48, duration: 0.4 });
+        sections.forEach((_, i) => {
+          if (i !== index) gsap.to(`.dot-nav-${i}`, { backgroundColor: 'rgba(255,255,255,0.2)', height: 20, duration: 0.4 });
+        });
+
+        lenis.stop();
+        lenis.scrollTo(sections[index], {
+          duration: 1.4,
+          force: true,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          onComplete: () => {
+            isAnimating = false;
+            lenis.start();
+            window.dispatchEvent(new CustomEvent('slide-enter', { detail: { index, id: sections[index].id } }));
+          }
+        });
+
+        const header = document.getElementById('main-header');
+        if (index > 0) header?.classList.add('nav-scrolled');
+        else header?.classList.remove('nav-scrolled');
+
+        const bgColor = sections[index].getAttribute('data-color') || '#0A0B10';
+        gsap.to('body', { backgroundColor: bgColor, duration: 1, ease: 'power2.inOut' });
+      };
+
+      const initFullPageSlider = (namespace: string) => {
+        const sideNav = document.getElementById('side-nav');
+        if (scrollObserver) scrollObserver.kill();
+
+        if (namespace !== 'home' || window.innerWidth < 1024) {
+          document.body.style.overflow = 'auto';
+          if (sideNav) sideNav.style.opacity = '0';
+          return;
+        }
+
+        document.body.style.overflow = 'hidden';
+        sections = gsap.utils.toArray('section');
+        
+        if (sideNav) {
+          sideNav.innerHTML = '';
+          sideNav.style.pointerEvents = 'auto';
+          const labels = ['SYSTEM_CORE', 'LEADER_MSG', 'METRICS'];
+          sections.forEach((section: any, i) => {
+            const dotContainer = document.createElement('div');
+            dotContainer.className = 'group flex items-center justify-end space-x-4 cursor-pointer py-1';
+            const label = document.createElement('span');
+            label.className = 'font-mono text-[9px] tracking-[0.3em] text-azure opacity-0 group-hover:opacity-100 transition-opacity uppercase pointer-events-none';
+            label.innerText = labels[i] || 'DATA';
+            const dot = document.createElement('div');
+            dot.className = `w-1 h-5 bg-white/20 transition-all duration-500 hover:bg-azure dot-nav-${i} pointer-events-none`;
+            dotContainer.appendChild(label);
+            dotContainer.appendChild(dot);
+            dotContainer.addEventListener('click', () => !isAnimating && !isTransitioning && gotoSection(i));
+            sideNav.appendChild(dotContainer);
+          });
+          sideNav.style.opacity = '1';
+          gsap.to(`.dot-nav-0`, { backgroundColor: '#00D1FF', height: 48, duration: 0 });
+        }
+
+        scrollObserver = Observer.create({
+          target: window,
+          type: "wheel,touch,pointer",
+          onDown: () => !isAnimating && !isTransitioning && currentIndex < sections.length - 1 && gotoSection(currentIndex + 1),
+          onUp: () => !isAnimating && !isTransitioning && currentIndex > 0 && gotoSection(currentIndex - 1),
+          tolerance: 60,
+          preventDefault: true,
+          ignore: "a, button, .interactive, header"
+        });
+      };
+
+      const initBarba = () => {
+        barba.init({
+          transitions: [{
+            name: 'staggered-bars',
+            async leave() {
+              isTransitioning = true;
+              const done = this.async();
+              const tl = gsap.timeline({ onComplete: done });
+              tl.to('.t-bar', { scaleY: 1, duration: 0.6, stagger: { amount: 0.3, from: "start" }, ease: "expo.inOut" });
+            },
+            async enter() {
+              currentIndex = 0;
+              isAnimating = false;
+              window.scrollTo(0, 0);
+              lenis.scrollTo(0, { immediate: true });
+              const tl = gsap.timeline({ onComplete: () => { isTransitioning = false; } });
+              tl.to('.t-bar', { scaleY: 0, duration: 0.6, stagger: { amount: 0.3, from: "end" }, ease: "expo.inOut", transformOrigin: "bottom center" })
+                .set('.t-bar', { transformOrigin: "top center" });
+            }
+          }]
+        });
+
+        barba.hooks.after((data) => {
+          ScrollTrigger.getAll().forEach(t => t.kill());
+          if (scrollObserver) scrollObserver.kill();
+          initLenis();
+          initFullPageSlider(data.next.namespace);
+          window.dispatchEvent(new Event('page-transition-done'));
+          setTimeout(() => ScrollTrigger.refresh(), 100);
+        });
+      };
+
+      initLenis();
+      initFullPageSlider(window.location.pathname === '/' || window.location.pathname.includes('index') ? 'home' : 'other');
+      initBarba();
+    </script>
   </body>
 </html>

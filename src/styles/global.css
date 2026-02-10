@@ -3,43 +3,103 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-midnight: #0A0B10;
+    --color-azure: #00D1FF;
+    --color-mist: #E2E8F0;
+    --color-slate: #161821;
+    --color-ocean: #0A192F;
+  }
+
   html {
-    @apply scroll-smooth;
+    scroll-behavior: smooth;
+    background-color: var(--color-midnight);
   }
   
   body {
-    @apply bg-[#0B0F14] text-white antialiased;
+    background-color: var(--color-midnight);
+    color: var(--color-mist);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden; /* Controlled by MainLayout scripts */
+    transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  ::selection {
+    background-color: var(--color-azure);
+    color: var(--color-midnight);
   }
 }
 
 @layer components {
+  /* Z-Index Hierarchy Management */
+  header { z-index: 160; }
+  #side-nav { z-index: 140; pointer-events: none; }
+  #side-nav > div { pointer-events: auto; }
+  
+  #cursor-dot, #cursor-circle { 
+    z-index: 9999; 
+    pointer-events: none; 
+  }
+  
+  .loader-overlay { 
+    z-index: 500; 
+    pointer-events: none;
+  }
+
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-24;
   }
   
-  .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+  .text-azure { color: var(--color-azure); }
+  .font-display { font-family: 'Space Grotesk', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Bento Grid Utility */
+  .bento-card {
+    background-color: theme('colors.midnight.800');
+    @apply border border-white/5 rounded-none p-8 transition-all duration-500;
   }
-  
-  .card-base {
-    @apply bg-white/5 border border-white/10 rounded-xl shadow-lg overflow-hidden transition-all duration-300;
+
+  .bento-card:hover {
+    border-color: rgba(0, 209, 255, 0.4);
   }
-  
-  .card-hover {
-    @apply hover:shadow-xl hover:-translate-y-1;
+
+  .scroll-distort {
+    will-change: transform;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Slide Numbering */
+  .slide-number {
+    @apply absolute left-4 top-1/2 -translate-y-1/2 text-[15vh] font-display font-bold text-white/[0.03] pointer-events-none lg:hidden;
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .clip-path-reveal {
+    clip-path: inset(0 0 100% 0);
   }
   
-  .opacity-100 {
+  .blur-reveal-char {
+    display: inline-block;
+    filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .blur-reveal-active .blur-reveal-char {
+    filter: blur(0);
     opacity: 1;
-  }
-  
-  .translate-y-0 {
     transform: translateY(0);
   }
+
+  .h-screen-dynamic {
+    height: 100vh; 
+    height: 100dvh;
+  }
+
+  .overflow-hidden { overflow: hidden; }
+  .overflow-auto { overflow: auto; }
 }

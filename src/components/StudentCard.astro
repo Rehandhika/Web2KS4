@@ -12,31 +12,35 @@ const { id, name, role, photo, quote, isOfficer = false } = Astro.props;
 ---
 
 <div
-  class="student-card card-base card-hover group"
+  class="student-card relative bg-midnight-800 border border-white/5 overflow-hidden group transition-all duration-500 hover:border-azure/40"
   data-role={role}
 >
-  <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-800">
+  <!-- Technical Frame -->
+  <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-azure opacity-0 group-hover:opacity-100 transition-opacity"></div>
+  <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-azure opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+  <div class="aspect-square overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
     <img
       src={photo}
       alt={name}
       loading="lazy"
-      class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+      class="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700"
     />
   </div>
-  <div class="p-4">
-    <div class="flex items-center justify-between mb-1">
-      <h3 class="font-semibold text-white">{name}</h3>
+  
+  <div class="p-6">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h3 class="font-display font-bold text-lg text-white group-hover:text-azure transition-colors">{name}</h3>
+        <p class="font-mono text-[10px] tracking-widest text-mist/40 uppercase mt-1">{role}</p>
+      </div>
       {isOfficer && (
-        <span class="px-2 py-1 bg-primary-600/20 text-primary-400 text-xs font-medium rounded-full">
-          {role}
-        </span>
+        <div class="w-1.5 h-1.5 rounded-full bg-azure"></div>
       )}
     </div>
-    {!isOfficer && (
-      <p class="text-sm text-gray-400">{role}</p>
-    )}
+    
     {quote && (
-      <p class="mt-2 text-sm text-gray-300 italic">"{quote}"</p>
+      <p class="text-xs text-mist/60 font-light italic border-l border-azure/30 pl-3 py-1">"{quote}"</p>
     )}
   </div>
 </div>

@@ -1,0 +1,51 @@
+<div id="cursor-dot" class="fixed top-0 left-0 w-2 h-2 bg-azure rounded-full pointer-events-none z-[9999] mix-blend-difference hidden md:block"></div>
+<div id="cursor-circle" class="fixed top-0 left-0 w-8 h-8 border border-azure rounded-full pointer-events-none z-[9998] mix-blend-difference transition-transform duration-300 ease-out hidden md:block"></div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const dot = document.getElementById('cursor-dot');
+  const circle = document.getElementById('cursor-circle');
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let circleX = 0;
+  let circleY = 0;
+
+  if (dot && circle) {
+    // 1. Core Movement
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      // Instant dot movement
+      gsap.to(dot, { x: mouseX - 4, y: mouseY - 4, duration: 0 });
+    });
+
+    // Smooth circle follow using RAF
+    const tick = () => {
+      circleX += (mouseX - circleX) * 0.15;
+      circleY += (mouseY - circleY) * 0.15;
+      
+      gsap.set(circle, { x: circleX - 16, y: circleY - 16 });
+      requestAnimationFrame(tick);
+    };
+    tick();
+
+    // 2. Interactive Hovers
+    // Detect hoverable elements automatically
+    const hoverables = document.querySelectorAll('a, button, .interactive');
+    
+    hoverables.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        gsap.to(circle, { scale: 2, backgroundColor: 'rgba(0, 209, 255, 0.1)', duration: 0.3 }); // Azure background
+        gsap.to(dot, { scale: 0, duration: 0.3 });
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        gsap.to(circle, { scale: 1, backgroundColor: 'transparent', duration: 0.3 });
+        gsap.to(dot, { scale: 1, duration: 0.3 });
+      });
+    });
+  }
+</script>

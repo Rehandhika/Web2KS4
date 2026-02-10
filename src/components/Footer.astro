@@ -2,37 +2,28 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-gray-900 text-gray-300">
-  <div class="container-custom section-padding">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      <div>
-        <h3 class="text-xl font-bold text-white mb-4">2KS4 Class</h3>
-        <p class="text-gray-400">
-          A class portfolio website showcasing our achievements, members, and academic journey.
-        </p>
-      </div>
+<footer class="bg-midnight-900 border-t border-white/5 py-6">
+  <div class="container-custom">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest text-mist/40 uppercase">
       
-      <div>
-        <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
-        <ul class="space-y-2">
-          <li><a href="/" class="hover:text-primary-400 transition-colors">Home</a></li>
-          <li><a href="/anggota" class="hover:text-primary-400 transition-colors">Anggota</a></li>
-          <li><a href="/akademik" class="hover:text-primary-400 transition-colors">Akademik</a></li>
-          <li><a href="/galeri" class="hover:text-primary-400 transition-colors">Galeri</a></li>
-        </ul>
+      <div class="flex items-center space-x-4">
+        <span>© {currentYear} 2KS4.CORE</span>
+        <div class="h-3 w-px bg-white/10"></div>
+        <span>ALL RIGHTS RESERVED</span>
       </div>
-      
-      <div>
-        <h3 class="text-lg font-semibold text-white mb-4">Contact</h3>
-        <p class="text-gray-400">
-          Email: info@2ks4-class.edu<br />
-          Location: Building A, Room 201
-        </p>
+
+      <div class="flex items-center space-x-6">
+        <a href="/" class="hover:text-azure transition-colors">Home</a>
+        <a href="/anggota" class="hover:text-azure transition-colors">Squad</a>
+        <a href="/akademik" class="hover:text-azure transition-colors">Academic</a>
+        <a href="/galeri" class="hover:text-azure transition-colors">Journal</a>
       </div>
-    </div>
-    
-    <div class="mt-12 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
-      <p>&copy; {currentYear} 2KS4 Class. All rights reserved.</p>
+
+      <div class="flex items-center space-x-2">
+        <span class="text-azure">SYSTEM.ACTIVE</span>
+        <div class="w-1.5 h-1.5 rounded-full bg-azure animate-pulse"></div>
+      </div>
+
     </div>
   </div>
 </footer>

@@ -5,30 +5,31 @@ gsap.registerPlugin(ScrollTrigger);
 
 function initPageAnimations(): void {
   const items = document.querySelectorAll('.gallery-item');
-  
-  items.forEach((item, index) => {
-    gsap.from(item, {
-      scrollTrigger: {
-        trigger: item,
-        start: 'top 90%',
-        toggleActions: 'play none none reverse'
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.5,
-      delay: index * 0.1,
-      ease: 'power2.out'
-    });
+  if (items.length === 0) return;
+
+  gsap.set(items, { opacity: 0, y: 40 });
+
+  ScrollTrigger.batch(items, {
+    onEnter: batch => gsap.to(batch, { 
+      opacity: 1, 
+      y: 0, 
+      stagger: 0.1, 
+      duration: 1,
+      ease: 'power3.out',
+      overwrite: true
+    }),
+    start: 'top 90%'
   });
   
-  // Hover animations
+  // Hover animations refined
   items.forEach((item) => {
     const img = item.querySelector('img');
-    
+    if (!img) return;
+
     item.addEventListener('mouseenter', () => {
       gsap.to(img, {
-        scale: 1.1,
-        duration: 0.5,
+        scale: 1.05,
+        duration: 0.8,
         ease: 'power2.out'
       });
     });
@@ -36,16 +37,30 @@ function initPageAnimations(): void {
     item.addEventListener('mouseleave', () => {
       gsap.to(img, {
         scale: 1,
-        duration: 0.5,
+        duration: 0.8,
         ease: 'power2.out'
       });
+    });
+
+    // Parallax effect on scroll
+    gsap.to(img, {
+      y: -20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: item,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true
+      }
     });
   });
 }
 
 function initPage(): void {
+  ScrollTrigger.getAll().forEach(t => t.kill());
   initPageAnimations();
-  ScrollTrigger.refresh();
+  
+  setTimeout(() => ScrollTrigger.refresh(), 100);
 }
 
 function cleanup(): void {
@@ -55,6 +70,7 @@ function cleanup(): void {
 export { initPage, cleanup };
 
 if (typeof window !== 'undefined') {
-  initPage();
+  if (document.readyState === 'complete') initPage();
+  else window.addEventListener('load', initPage);
   window.addEventListener('beforeunload', cleanup);
 }

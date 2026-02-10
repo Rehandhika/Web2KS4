@@ -1,140 +1,146 @@
 ---
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/anggota', label: 'Anggota' },
-  { href: '/akademik', label: 'Akademik' },
-  { href: '/galeri', label: 'Galeri' }
+  { href: '/anggota', label: 'Squad' },
+  { href: '/akademik', label: 'Academic' },
+  { href: '/galeri', label: 'Journal' }
 ];
 
 const currentPath = Astro.url.pathname;
 ---
 
-<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
-  <nav class="container-custom">
-    <div class="flex items-center justify-between h-20">
-      <a href="/" class="flex items-center space-x-2 group">
-        <span class="text-2xl font-bold text-white transition-colors group-hover:text-primary-400">2KS4</span>
+<header id="main-header" class="fixed top-0 left-0 right-0 z-[160] py-8 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+  <nav id="main-nav" class="container-custom">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="group relative z-[170] flex items-center space-x-2">
+        <span class="text-2xl font-display font-bold text-white group-hover:text-azure transition-colors duration-500 tracking-tighter">2KS4</span>
+        <div class="h-px w-0 bg-azure group-hover:w-8 transition-all duration-500"></div>
       </a>
-      
-      <ul class="hidden md:flex items-center space-x-10">
+
+      <!-- Desktop Menu -->
+      <ul class="hidden md:flex items-center space-x-12">
         {navItems.map((item) => (
-          <li class="relative">
+          <li class="relative overflow-hidden group">
             <a
               href={item.href}
               class:list={[
-                'text-sm font-medium transition-colors duration-200 hover:text-primary-400 relative py-2',
-                currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
-                  ? 'text-white'
-                  : 'text-gray-300'
+                'font-mono text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 py-2 block',
+                currentPath === item.href ? 'text-azure' : 'text-mist/40 hover:text-white'
               ]}
             >
               {item.label}
-              <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-500 transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
             </a>
+            <div class:list={[
+              'absolute bottom-0 left-0 w-full h-px bg-azure transform transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]',
+              currentPath === item.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100 origin-center'
+            ]}></div>
           </li>
         ))}
-        <li>
-          <a
-            href="/anggota"
-            class="px-5 py-2.5 bg-primary-600/80 hover:bg-primary-500 text-white text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(14,165,233,0.6)] hover:scale-105"
-          >
-            Join Us
-          </a>
-        </li>
       </ul>
-      
+
+      <!-- Mobile Toggle -->
       <button
-        id="mobile-menu-toggle"
-        class="md:hidden p-2 text-white hover:text-primary-400 transition-colors"
-        aria-label="Toggle menu"
+        id="menu-toggle"
+        class="relative z-[170] group md:hidden flex flex-col items-end space-y-1.5 p-2 focus:outline-none"
+        aria-label="Menu"
       >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        <div class="w-8 h-px bg-white group-hover:bg-azure transition-all duration-500 origin-right" id="line-1"></div>
+        <div class="w-5 h-px bg-white group-hover:bg-azure transition-all duration-500 origin-right" id="line-2"></div>
       </button>
-    </div>
-    
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 top-20 bg-[#0B0F14]/95 backdrop-blur-xl opacity-0 scale-95 transition-all duration-300">
-      <div class="flex flex-col items-center justify-center h-full space-y-8">
-        {navItems.map((item) => (
-          <a
-            href={item.href}
-            class:list={[
-              'text-xl font-medium transition-colors duration-200 hover:text-primary-400',
-              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
-                ? 'text-white'
-                : 'text-gray-300'
-            ]}
-          >
-            {item.label}
-          </a>
-        ))}
-        <a
-          href="/anggota"
-          class="px-8 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(14,165,233,0.6)] hover:scale-105"
-        >
-          Join Us
-        </a>
-      </div>
     </div>
   </nav>
 </header>
 
-<script>
-  const navbar = document.getElementById('navbar');
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
+<!-- Fullscreen Mobile Menu Overlay - MOVED OUTSIDE HEADER -->
+<div id="menu-overlay" class="fixed inset-0 bg-midnight-900 z-[155] translate-y-[-100%] flex flex-col justify-center items-center pointer-events-none transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] invisible">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-azure/20 blur-[150px] rounded-full"></div>
+  </div>
   
-  // Scroll behavior
-  function updateNavbar(): void {
-    if (!navbar) return;
-    
-    if (window.scrollY > 60) {
-      navbar.classList.add('bg-[#0B0F14]/95', 'backdrop-blur-xl', 'shadow-lg');
-      navbar.classList.remove('bg-transparent');
-    } else {
-      navbar.classList.remove('bg-[#0B0F14]/95', 'backdrop-blur-xl', 'shadow-lg');
-      navbar.classList.add('bg-transparent');
-    }
+  <ul class="text-center space-y-8 relative z-10">
+    {navItems.map((item) => (
+      <li class="overflow-hidden">
+        <a
+          href={item.href}
+          class="mobile-nav-link block text-5xl sm:text-7xl font-display font-bold text-mist hover:text-azure transition-colors duration-500 opacity-0 translate-y-full"
+        >
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+  
+  <div class="absolute bottom-12 left-0 right-0 text-center opacity-0 translate-y-8" id="menu-footer">
+    <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-mist/40">Class of 2026 — Champions</span>
+  </div>
+</div>
+
+<style>
+  /* Header Scrolled State */
+  #main-header.nav-scrolled {
+    @apply py-4 bg-midnight-900/80 backdrop-blur-xl border-b border-white/5 shadow-2xl;
   }
+
+  #main-header.nav-hidden {
+    @apply -translate-y-full opacity-0;
+  }
+
+  /* Mobile Open State */
+  body.menu-open #menu-overlay {
+    @apply translate-y-0 pointer-events-auto visible;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const header = document.getElementById('main-header');
+  const toggle = document.getElementById('menu-toggle');
+  const overlay = document.getElementById('menu-overlay');
+  const links = document.querySelectorAll('.mobile-nav-link');
+  const footer = document.getElementById('menu-footer');
+  const line1 = document.getElementById('line-1');
+  const line2 = document.getElementById('line-2');
   
-  window.addEventListener('scroll', updateNavbar);
-  updateNavbar();
-  
-  // Mobile menu with fade + scale animation
-  if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener('click', () => {
-      const isHidden = mobileMenu.classList.contains('hidden');
-      
-      if (isHidden) {
-        mobileMenu.classList.remove('hidden');
-        // Trigger reflow
-        void mobileMenu.offsetWidth;
-        mobileMenu.classList.remove('opacity-0', 'scale-95');
-        mobileMenu.classList.add('opacity-100', 'scale-100');
-      } else {
-        mobileMenu.classList.remove('opacity-100', 'scale-100');
-        mobileMenu.classList.add('opacity-0', 'scale-95');
-        setTimeout(() => {
-          mobileMenu.classList.add('hidden');
-        }, 300);
-      }
+  let isMenuOpen = false;
+
+  const toggleMenu = () => {
+    isMenuOpen = !isMenuOpen;
+    
+    const tl = gsap.timeline({
+      defaults: { ease: "expo.inOut", duration: 1 }
+    });
+
+    if (isMenuOpen) {
+      document.body.classList.add('menu-open');
+      tl.to(line1, { rotate: -45, y: 4, width: '32px' }, 0)
+        .to(line2, { rotate: 45, y: -4, width: '32px' }, 0)
+        .to(links, { 
+          opacity: 1, 
+          y: 0, 
+          stagger: 0.1,
+          ease: "power4.out"
+        }, 0.3)
+        .to(footer, { opacity: 1, y: 0 }, 0.5);
+    } else {
+      tl.to(links, { opacity: 0, y: '100%', stagger: 0.05, duration: 0.5 })
+        .to(footer, { opacity: 0, y: 20, duration: 0.3 }, 0)
+        .to(line1, { rotate: 0, y: 0, width: '32px' }, 0.3)
+        .to(line2, { rotate: 0, y: 0, width: '20px' }, 0.3)
+        .add(() => {
+          document.body.classList.remove('menu-open');
+        }, 0.4);
+    }
+  };
+
+  if (toggle) {
+    toggle.addEventListener('click', toggleMenu);
+    
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isMenuOpen) toggleMenu();
+      });
     });
   }
-  
-  // Active link underline animation
-  const navLinks = document.querySelectorAll('#navbar nav > ul > li > a');
-  navLinks.forEach((link) => {
-    const span = link.querySelector('span');
-    if (span) {
-      link.addEventListener('mouseenter', () => {
-        span.classList.remove('scale-x-0');
-        span.classList.add('scale-x-100');
-      });
-      link.addEventListener('mouseleave', () => {
-        span.classList.remove('scale-x-100');
-        span.classList.add('scale-x-0');
-      });
-    }
-  });
 </script>

@@ -5,18 +5,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 function initPageAnimations(): void {
   const cards = document.querySelectorAll('.course-card');
-  
-  gsap.from(cards, {
-    scrollTrigger: {
-      trigger: '#courses-grid',
-      start: 'top 80%',
-      toggleActions: 'play none none reverse'
-    },
-    y: 40,
-    opacity: 0,
-    duration: 0.6,
-    stagger: 0.15,
-    ease: 'power2.out'
+  if (cards.length === 0) return;
+
+  gsap.set(cards, { opacity: 0, y: 30 });
+
+  ScrollTrigger.batch(cards, {
+    onEnter: batch => gsap.to(batch, { 
+      opacity: 1, 
+      y: 0, 
+      stagger: 0.1, 
+      duration: 0.8,
+      ease: 'power3.out',
+      overwrite: true
+    }),
+    start: 'top 85%'
   });
 }
 
@@ -25,7 +27,7 @@ function initCollapsibleCards(): void {
   
   cards.forEach((card) => {
     const header = card.querySelector('.course-header');
-    const details = card.querySelector('.course-details');
+    const details = card.querySelector('.course-details') as HTMLElement;
     const arrow = card.querySelector('.course-arrow');
     let isOpen = false;
     
@@ -35,42 +37,38 @@ function initCollapsibleCards(): void {
       isOpen = !isOpen;
       
       if (isOpen) {
+        gsap.set(details, { display: 'block', height: 0, opacity: 0 });
         gsap.to(details, {
           height: 'auto',
           opacity: 1,
-          duration: 0.3,
-          ease: 'power2.out',
-          onStart: () => {
-            details.classList.remove('hidden');
-          }
+          duration: 0.5,
+          ease: 'expo.out',
+          onComplete: () => ScrollTrigger.refresh()
         });
-        gsap.to(arrow, {
-          rotate: 180,
-          duration: 0.3
-        });
+        gsap.to(arrow, { rotate: 180, duration: 0.4, ease: 'power2.out' });
       } else {
         gsap.to(details, {
           height: 0,
           opacity: 0,
-          duration: 0.3,
-          ease: 'power2.out',
+          duration: 0.4,
+          ease: 'expo.in',
           onComplete: () => {
-            details.classList.add('hidden');
+            details.style.display = 'none';
+            ScrollTrigger.refresh();
           }
         });
-        gsap.to(arrow, {
-          rotate: 0,
-          duration: 0.3
-        });
+        gsap.to(arrow, { rotate: 0, duration: 0.4, ease: 'power2.out' });
       }
     });
   });
 }
 
 function initPage(): void {
+  ScrollTrigger.getAll().forEach(t => t.kill());
   initPageAnimations();
   initCollapsibleCards();
-  ScrollTrigger.refresh();
+  
+  setTimeout(() => ScrollTrigger.refresh(), 100);
 }
 
 function cleanup(): void {
@@ -80,6 +78,7 @@ function cleanup(): void {
 export { initPage, cleanup };
 
 if (typeof window !== 'undefined') {
-  initPage();
+  if (document.readyState === 'complete') initPage();
+  else window.addEventListener('load', initPage);
   window.addEventListener('beforeunload', cleanup);
 }

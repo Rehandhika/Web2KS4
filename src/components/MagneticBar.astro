@@ -1,0 +1,60 @@
+<div id="magnetic-progress" class="fixed left-0 top-0 bottom-0 w-1.5 z-[150] mix-blend-difference hidden md:block">
+  <div class="h-full w-full bg-white/10 relative">
+    <!-- The Bar itself -->
+    <div id="magnetic-indicator" class="absolute top-0 left-0 w-full h-16 bg-azure shadow-[0_0_15px_rgba(0,209,255,0.8)] rounded-r-md will-change-transform"></div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+  
+  const bar = document.getElementById('magnetic-indicator');
+  const container = document.getElementById('magnetic-progress');
+  
+  if (bar && container) {
+    // 1. SCROLL PROGRESS LOGIC (Base Position)
+    gsap.to(bar, {
+      y: () => window.innerHeight - 64, 
+      ease: 'none',
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0, 
+        onUpdate: (self) => {
+          container.dataset.progress = self.progress.toString();
+        }
+      }
+    });
+
+    // 2. MOUSE INTERACTION (Magnetic Pull)
+    window.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      
+      if (mouseX < 100) {
+        gsap.to(bar, {
+          y: mouseY - 32, 
+          scaleX: 2, 
+          duration: 0.6,
+          ease: 'power3.out',
+          overwrite: 'auto'
+        });
+      } else {
+        const progress = parseFloat(container.dataset.progress || '0');
+        const scrollPos = progress * (window.innerHeight - 64);
+        
+        gsap.to(bar, {
+          y: scrollPos,
+          scaleX: 1,
+          duration: 0.8,
+          ease: 'elastic.out(1, 0.5)',
+          overwrite: 'auto'
+        });
+      }
+    });
+  }
+</script>
