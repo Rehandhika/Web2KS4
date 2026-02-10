@@ -1,0 +1,99 @@
+<section id="typography" class="py-24 bg-[#0B0F14] overflow-hidden">
+  <div class="container-custom">
+    <div class="text-center">
+      <div class="overflow-hidden">
+        <h2
+          id="typography-heading"
+          class="text-5xl md:text-7xl lg:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-primary-400 to-cyan-400 opacity-0 translate-y-full"
+        >
+          Collective
+        </h2>
+      </div>
+      <div class="overflow-hidden">
+        <h2
+          id="typography-subheading"
+          class="text-5xl md:text-7xl lg:text-8xl font-bold text-white opacity-0 translate-y-full"
+        >
+          Intelligence
+        </h2>
+      </div>
+      <div class="overflow-hidden">
+        <p
+          id="typography-description"
+          class="mt-8 text-xl text-gray-400 max-w-2xl mx-auto opacity-0 translate-y-full"
+        >
+          In Motion — We move forward together, creating impact that transcends individual capabilities.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Typography letter stagger reveal animation
+  function initTypographyAnimations(): void {
+    const heading = document.getElementById('typography-heading');
+    const subheading = document.getElementById('typography-subheading');
+    const description = document.getElementById('typography-description');
+    
+    if (!heading || !subheading || !description) return;
+    
+    // Split text into letters for stagger animation
+    const splitText = (element: HTMLElement) => {
+      const text = element.textContent || '';
+      element.innerHTML = '';
+      text.split('').forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.className = 'inline-block opacity-0 translate-y-4';
+        span.style.transitionDelay = `${index * 0.03}s`;
+        element.appendChild(span);
+      });
+    };
+    
+    splitText(heading);
+    splitText(subheading);
+    
+    // Animate letters on scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const letters = entry.target.querySelectorAll('span');
+            letters.forEach((letter) => {
+              setTimeout(() => {
+                letter.classList.remove('opacity-0', 'translate-y-4');
+                letter.classList.add('opacity-100', 'translate-y-0');
+              }, parseInt(letter.style.transitionDelay || '0') * 1000);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    
+    observer.observe(heading);
+    observer.observe(subheading);
+    
+    // Animate description
+    const descObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('opacity-0', 'translate-y-full');
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            descObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    
+    descObserver.observe(description);
+  }
+  
+  if (typeof window !== 'undefined') {
+    initTypographyAnimations();
+  }
+</script>

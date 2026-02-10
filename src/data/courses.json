@@ -1,0 +1,116 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "Web Development Fundamentals",
+      "code": "WD101",
+      "credits": 3,
+      "semester": "Semester 1",
+      "description": "Introduction to HTML, CSS, and JavaScript basics for building modern websites.",
+      "details": [
+        "HTML5 semantic markup",
+        "CSS3 styling and layouts",
+        "JavaScript fundamentals",
+        "Responsive design principles"
+      ],
+      "instructor": "Dr. Ahmad Yani",
+      "hours": 48
+    },
+    {
+      "id": 2,
+      "title": "Advanced JavaScript",
+      "code": "JS201",
+      "credits": 4,
+      "semester": "Semester 2",
+      "description": "Deep dive into modern JavaScript including ES6+, async programming, and design patterns.",
+      "details": [
+        "ES6+ features and syntax",
+        "Async/await and promises",
+        "Module patterns",
+        "Performance optimization"
+      ],
+      "instructor": "Prof. Budi Santoso",
+      "hours": 64
+    },
+    {
+      "id": 3,
+      "title": "Database Systems",
+      "code": "DB301",
+      "credits": 4,
+      "semester": "Semester 3",
+      "description": "Comprehensive study of relational databases, SQL, and database design principles.",
+      "details": [
+        "ER modeling",
+        "SQL queries and optimization",
+        "Normalization techniques",
+        "Transaction management"
+      ],
+      "instructor": "Dr. Citra Dewi",
+      "hours": 64
+    },
+    {
+      "id": 4,
+      "title": "UI/UX Design Principles",
+      "code": "UX401",
+      "credits": 3,
+      "semester": "Semester 4",
+      "description": "Learn user interface and experience design methodologies for creating intuitive applications.",
+      "details": [
+        "User research methods",
+        "Wireframing and prototyping",
+        "Design systems",
+        "Usability testing"
+      ],
+      "instructor": "Prof. Dina Putri",
+      "hours": 48
+    },
+    {
+      "id": 5,
+      "title": "React Framework",
+      "code": "RE501",
+      "credits": 4,
+      "semester": "Semester 5",
+      "description": "Build modern single-page applications using React.js and its ecosystem.",
+      "details": [
+        "Components and props",
+        "State management with hooks",
+        "React Router",
+        "Context API and Redux"
+      ],
+      "instructor": "Dr. Eko Prasetyo",
+      "hours": 64
+    },
+    {
+      "id": 6,
+      "title": "DevOps Fundamentals",
+      "code": "DO601",
+      "credits": 3,
+      "semester": "Semester 6",
+      "description": "Introduction to DevOps practices including CI/CD, containerization, and cloud deployment.",
+      "details": [
+        "Git workflows",
+        "Docker basics",
+        "CI/CD pipelines",
+        "Cloud platforms overview"
+      ],
+      "instructor": "Prof. Fajar Nugroho",
+      "hours": 48
+    },
+    {
+      "id": 7,
+      "title": "Capstone Project",
+      "code": "CP701",
+      "credits": 6,
+      "semester": "Semester 7",
+      "description": "Final project demonstrating comprehensive skills acquired throughout the program.",
+      "details": [
+        "Project planning",
+        "Full-stack development",
+        "Team collaboration",
+        "Documentation and presentation"
+      ],
+      "instructor": "Dr. Gita Maharani",
+      "hours": 96
+    }
+  ]
+}

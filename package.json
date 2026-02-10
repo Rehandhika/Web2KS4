@@ -1,0 +1,26 @@
+{
+  "name": "2ks4-web",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^5.1.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "@types/three": "^0.160.0",
+    "astro": "^4.16.0",
+    "gsap": "^3.12.5",
+    "tailwindcss": "^3.4.0",
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.24",
+    "terser": "^5.46.0",
+    "typescript": "^5.3.3"
+  }
+}

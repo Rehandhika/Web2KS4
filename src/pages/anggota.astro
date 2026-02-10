@@ -1,0 +1,76 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import StudentCard from '../components/StudentCard.astro';
+import studentsData from '../data/students.json';
+
+const { officers, members } = studentsData;
+---
+
+<MainLayout title="Anggota" pageClass="bg-gray-50">
+  <section class="pt-24 pb-12">
+    <div class="container-custom">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Our Members</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Meet the dedicated individuals who make our class special.
+        </p>
+      </div>
+      
+      <div class="flex justify-center gap-4 mb-12 flex-wrap">
+        <button
+          class="filter-btn px-6 py-2 bg-primary-600 text-white font-medium rounded-full transition-colors"
+          data-filter="all"
+        >
+          All
+        </button>
+        <button
+          class="filter-btn px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
+          data-filter="Chairperson"
+        >
+          Officers
+        </button>
+        <button
+          class="filter-btn px-6 py-2 bg-gray-200 text-gray-700 font-medium rounded-full transition-colors"
+          data-filter="Member"
+        >
+          Members
+        </button>
+      </div>
+      
+      <div id="anggota-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {officers.map((officer) => (
+          <StudentCard
+            id={officer.id}
+            name={officer.name}
+            role={officer.role}
+            photo={officer.photo}
+            quote={officer.quote}
+            isOfficer={true}
+          />
+        ))}
+        
+        {members.map((member) => (
+          <StudentCard
+            id={member.id}
+            name={member.name}
+            role={member.role}
+            photo={member.photo}
+            isOfficer={false}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<script>
+  import { initPage, cleanup } from '../scripts/anggota';
+  
+  document.addEventListener('astro:page-load', () => {
+    initPage();
+  });
+  
+  document.addEventListener('astro:before-swap', () => {
+    cleanup();
+  });
+</script>

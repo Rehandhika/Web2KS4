@@ -1,0 +1,227 @@
+{
+  "totalStudents": 36,
+  "officers": [
+    {
+      "id": 1,
+      "name": "Ahmad Fauzi",
+      "role": "Chairperson",
+      "photo": "/images/students/chairperson.webp",
+      "quote": "Leadership is about making others better."
+    },
+    {
+      "id": 2,
+      "name": "Sarah Putri",
+      "role": "Vice Chairperson",
+      "photo": "/images/students/vice.webp",
+      "quote": "Together we achieve more."
+    },
+    {
+      "id": 3,
+      "name": "Rizky Darmawan",
+      "role": "Secretary",
+      "photo": "/images/students/secretary.webp",
+      "quote": "Organization is key to success."
+    },
+    {
+      "id": 4,
+      "name": "Dewi Lestari",
+      "role": "Treasurer",
+      "photo": "/images/students/treasurer.webp",
+      "quote": "Every penny counts."
+    }
+  ],
+  "members": [
+    {
+      "id": 5,
+      "name": "Budi Santoso",
+      "role": "Member",
+      "photo": "/images/students/member-1.webp"
+    },
+    {
+      "id": 6,
+      "name": "Citra Dewi",
+      "role": "Member",
+      "photo": "/images/students/member-2.webp"
+    },
+    {
+      "id": 7,
+      "name": "Dimas Prasetyo",
+      "role": "Member",
+      "photo": "/images/students/member-3.webp"
+    },
+    {
+      "id": 8,
+      "name": "Eka Putri",
+      "role": "Member",
+      "photo": "/images/students/member-4.webp"
+    },
+    {
+      "id": 9,
+      "name": "Fajar Nugroho",
+      "role": "Member",
+      "photo": "/images/students/member-5.webp"
+    },
+    {
+      "id": 10,
+      "name": "Gita Safitri",
+      "role": "Member",
+      "photo": "/images/students/member-6.webp"
+    },
+    {
+      "id": 11,
+      "name": "Hendra Wijaya",
+      "role": "Member",
+      "photo": "/images/students/member-7.webp"
+    },
+    {
+      "id": 12,
+      "name": "Ira Maharani",
+      "role": "Member",
+      "photo": "/images/students/member-8.webp"
+    },
+    {
+      "id": 13,
+      "name": "Joko Susilo",
+      "role": "Member",
+      "photo": "/images/students/member-9.webp"
+    },
+    {
+      "id": 14,
+      "name": "Kartika Sari",
+      "role": "Member",
+      "photo": "/images/students/member-10.webp"
+    },
+    {
+      "id": 15,
+      "name": "Lukman Hakim",
+      "role": "Member",
+      "photo": "/images/students/member-11.webp"
+    },
+    {
+      "id": 16,
+      "name": "Maya Angelia",
+      "role": "Member",
+      "photo": "/images/students/member-12.webp"
+    },
+    {
+      "id": 17,
+      "name": "Nanda Pratama",
+      "role": "Member",
+      "photo": "/images/students/member-13.webp"
+    },
+    {
+      "id": 18,
+      "name": "Olivia Kumala",
+      "role": "Member",
+      "photo": "/images/students/member-14.webp"
+    },
+    {
+      "id": 19,
+      "name": "Pandu Setiawan",
+      "role": "Member",
+      "photo": "/images/students/member-15.webp"
+    },
+    {
+      "id": 20,
+      "name": "Qori Amelia",
+      "role": "Member",
+      "photo": "/images/students/member-16.webp"
+    },
+    {
+      "id": 21,
+      "name": "Rafi Putra",
+      "role": "Member",
+      "photo": "/images/students/member-17.webp"
+    },
+    {
+      "id": 22,
+      "name": "Sinta Rahayu",
+      "role": "Member",
+      "photo": "/images/students/member-18.webp"
+    },
+    {
+      "id": 23,
+      "name": "Tomi Anderson",
+      "role": "Member",
+      "photo": "/images/students/member-19.webp"
+    },
+    {
+      "id": 24,
+      "name": "Umi Kalsum",
+      "role": "Member",
+      "photo": "/images/students/member-20.webp"
+    },
+    {
+      "id": 25,
+      "name": "Vian Dharma",
+      "role": "Member",
+      "photo": "/images/students/member-21.webp"
+    },
+    {
+      "id": 26,
+      "name": "Wulan Sari",
+      "role": "Member",
+      "photo": "/images/students/member-22.webp"
+    },
+    {
+      "id": 27,
+      "name": "Xavier Lee",
+      "role": "Member",
+      "photo": "/images/students/member-23.webp"
+    },
+    {
+      "id": 28,
+      "name": "Yuni Astuti",
+      "role": "Member",
+      "photo": "/images/students/member-24.webp"
+    },
+    {
+      "id": 29,
+      "name": "Zaki Rahman",
+      "role": "Member",
+      "photo": "/images/students/member-25.webp"
+    },
+    {
+      "id": 30,
+      "name": "Adinda Permata",
+      "role": "Member",
+      "photo": "/images/students/member-26.webp"
+    },
+    {
+      "id": 31,
+      "name": "Bagus Pranowo",
+      "role": "Member",
+      "photo": "/images/students/member-27.webp"
+    },
+    {
+      "id": 32,
+      "name": "Cici Novitasari",
+      "role": "Member",
+      "photo": "/images/students/member-28.webp"
+    },
+    {
+      "id": 33,
+      "name": "Deni Kurniawan",
+      "role": "Member",
+      "photo": "/images/students/member-29.webp"
+    },
+    {
+      "id": 34,
+      "name": "Erna Wulandari",
+      "role": "Member",
+      "photo": "/images/students/member-30.webp"
+    },
+    {
+      "id": 35,
+      "name": "Fauzi Rahman",
+      "role": "Member",
+      "photo": "/images/students/member-31.webp"
+    },
+    {
+      "id": 36,
+      "name": "Gina Kusuma",
+      "role": "Member",
+      "photo": "/images/students/member-32.webp"
+    }
+  ]
+}

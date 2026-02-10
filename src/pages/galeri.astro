@@ -1,0 +1,76 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+
+const galleryItems = [
+  {
+    id: 1,
+    src: '/images/gallery/photo-1.webp',
+    alt: 'Classroom Activity',
+    title: 'Classroom Learning',
+    category: 'Academic'
+  },
+  {
+    id: 2,
+    src: '/images/gallery/photo-2.webp',
+    alt: 'Group Project',
+    title: 'Team Collaboration',
+    category: 'Activities'
+  },
+  {
+    id: 3,
+    src: '/images/gallery/photo-3.webp',
+    alt: 'Science Lab',
+    title: 'Lab Experiments',
+    category: 'Academic'
+  },
+  {
+    id: 4,
+    src: '/images/gallery/photo-4.webp',
+    alt: 'Sports Day',
+    title: 'Annual Sports Day',
+    category: 'Events'
+  },
+  {
+    id: 5,
+    src: '/images/gallery/photo-5.webp',
+    alt: 'Art Exhibition',
+    title: 'Creative Showcase',
+    category: 'Arts'
+  },
+  {
+    id: 6,
+    src: '/images/gallery/photo-6.webp',
+    alt: 'Graduation',
+    title: 'Class Celebration',
+    category: 'Events'
+  }
+];
+---
+
+<MainLayout title="Galeri" pageClass="bg-gray-50">
+  <section class="pt-24 pb-12">
+    <div class="container-custom">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Photo Gallery</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Capturing memories from our journey together.
+        </p>
+      </div>
+      
+      <GalleryGrid items={galleryItems} />
+    </div>
+  </section>
+</MainLayout>
+
+<script>
+  import { initPage, cleanup } from '../scripts/galeri';
+  
+  document.addEventListener('astro:page-load', () => {
+    initPage();
+  });
+  
+  document.addEventListener('astro:before-swap', () => {
+    cleanup();
+  });
+</script>

@@ -1,0 +1,26 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+import TypographySection from '../components/TypographySection.astro';
+import StatSection from '../components/StatSection.astro';
+import AboutSection from '../components/AboutSection.astro';
+---
+
+<MainLayout title="Home">
+  <Hero />
+  <TypographySection />
+  <StatSection />
+  <AboutSection />
+</MainLayout>
+
+<script>
+  import { initPage, cleanup } from '../scripts/home';
+  
+  document.addEventListener('astro:page-load', () => {
+    initPage();
+  });
+  
+  document.addEventListener('astro:before-swap', () => {
+    cleanup();
+  });
+</script>

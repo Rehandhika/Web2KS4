@@ -1,0 +1,36 @@
+---
+interface GalleryItem {
+  id: number;
+  src: string;
+  alt: string;
+  title: string;
+  category: string;
+}
+
+interface Props {
+  items: GalleryItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {items.map((item) => (
+    <article class="gallery-item relative group overflow-hidden rounded-xl shadow-lg">
+      <img
+        src={item.src}
+        alt={item.alt}
+        loading="lazy"
+        class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="inline-block px-3 py-1 bg-primary-500 text-white text-xs font-medium rounded-full mb-2">
+            {item.category}
+          </span>
+          <h3 class="text-white font-semibold text-lg">{item.title}</h3>
+        </div>
+      </div>
+    </article>
+  ))}
+</div>

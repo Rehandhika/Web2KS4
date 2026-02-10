@@ -1,0 +1,18 @@
+{
+  "extends": "astro/tsconfigs/base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@data/*": ["src/data/*"]
+    },
+    "jsx": "preserve",
+    "jsxImportSource": "astro",
+    "target": "ES2017",
+    "lib": ["ES2017", "DOM"],
+    "module": "ESNext"
+  }
+}

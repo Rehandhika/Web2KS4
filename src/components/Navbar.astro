@@ -1,0 +1,140 @@
+---
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/anggota', label: 'Anggota' },
+  { href: '/akademik', label: 'Akademik' },
+  { href: '/galeri', label: 'Galeri' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+  <nav class="container-custom">
+    <div class="flex items-center justify-between h-20">
+      <a href="/" class="flex items-center space-x-2 group">
+        <span class="text-2xl font-bold text-white transition-colors group-hover:text-primary-400">2KS4</span>
+      </a>
+      
+      <ul class="hidden md:flex items-center space-x-10">
+        {navItems.map((item) => (
+          <li class="relative">
+            <a
+              href={item.href}
+              class:list={[
+                'text-sm font-medium transition-colors duration-200 hover:text-primary-400 relative py-2',
+                currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                  ? 'text-white'
+                  : 'text-gray-300'
+              ]}
+            >
+              {item.label}
+              <span class="absolute bottom-0 left-0 w-full h-0.5 bg-primary-500 transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="/anggota"
+            class="px-5 py-2.5 bg-primary-600/80 hover:bg-primary-500 text-white text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(14,165,233,0.6)] hover:scale-105"
+          >
+            Join Us
+          </a>
+        </li>
+      </ul>
+      
+      <button
+        id="mobile-menu-toggle"
+        class="md:hidden p-2 text-white hover:text-primary-400 transition-colors"
+        aria-label="Toggle menu"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 top-20 bg-[#0B0F14]/95 backdrop-blur-xl opacity-0 scale-95 transition-all duration-300">
+      <div class="flex flex-col items-center justify-center h-full space-y-8">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'text-xl font-medium transition-colors duration-200 hover:text-primary-400',
+              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                ? 'text-white'
+                : 'text-gray-300'
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a
+          href="/anggota"
+          class="px-8 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(14,165,233,0.6)] hover:scale-105"
+        >
+          Join Us
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  // Scroll behavior
+  function updateNavbar(): void {
+    if (!navbar) return;
+    
+    if (window.scrollY > 60) {
+      navbar.classList.add('bg-[#0B0F14]/95', 'backdrop-blur-xl', 'shadow-lg');
+      navbar.classList.remove('bg-transparent');
+    } else {
+      navbar.classList.remove('bg-[#0B0F14]/95', 'backdrop-blur-xl', 'shadow-lg');
+      navbar.classList.add('bg-transparent');
+    }
+  }
+  
+  window.addEventListener('scroll', updateNavbar);
+  updateNavbar();
+  
+  // Mobile menu with fade + scale animation
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        // Trigger reflow
+        void mobileMenu.offsetWidth;
+        mobileMenu.classList.remove('opacity-0', 'scale-95');
+        mobileMenu.classList.add('opacity-100', 'scale-100');
+      } else {
+        mobileMenu.classList.remove('opacity-100', 'scale-100');
+        mobileMenu.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => {
+          mobileMenu.classList.add('hidden');
+        }, 300);
+      }
+    });
+  }
+  
+  // Active link underline animation
+  const navLinks = document.querySelectorAll('#navbar nav > ul > li > a');
+  navLinks.forEach((link) => {
+    const span = link.querySelector('span');
+    if (span) {
+      link.addEventListener('mouseenter', () => {
+        span.classList.remove('scale-x-0');
+        span.classList.add('scale-x-100');
+      });
+      link.addEventListener('mouseleave', () => {
+        span.classList.remove('scale-x-100');
+        span.classList.add('scale-x-0');
+      });
+    }
+  });
+</script>
